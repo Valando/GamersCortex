@@ -8,5 +8,6 @@ int main() {
     string a = "hello";
 
     cout << a << endl;
+    cout << a << endl;
     return 0;
 }
