@@ -4,17 +4,21 @@
 
 using namespace std;
 // Constructor definition
-MinerClass::MinerClass(int initialValue) : value(initialValue),vindue(nullptr),renderer(nullptr),h(50),w(100) {
+MinerClass::MinerClass(int initialValue) : value(initialValue),vindue(nullptr),renderer(nullptr),h(50),w(100),f(0),counter_x(100),counter_y(100) {
     // initi a video 
-    SDL_Init(SDL_INIT_VIDEO);
-
+    SDL_Init(SDL_INIT_VIDEO|SDL_INIT_EVENTS);
+   
     // Create a winow with dimensions 640x480, and a renderer to render your graphics
     SDL_CreateWindowAndRenderer(640,480,0,&vindue,&renderer);
     // set renderer to draw a black screen for window
     SDL_SetRenderDrawColor(renderer,0,0,0,255);
 
+
  // clear renderer
     SDL_RenderClear(renderer);
+    GenerateRectangle(counter_x,counter_y,h,w,255); 
+     
+
 
 }
 // Destructor definition
@@ -23,6 +27,7 @@ MinerClass::~MinerClass() {
     if (rect != nullptr) {
         delete rect;
     }
+
     // Close SDL components and perform other cleanup
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(vindue);
@@ -49,7 +54,8 @@ void MinerClass::GenerateRectangle(int xr, int yr, int hr, int wr,int c)
       SDL_RenderDrawRect(renderer,rect);
       // present render
       SDL_RenderPresent(renderer); 
- 
+      
+      
 
 }
 
@@ -66,4 +72,58 @@ void MinerClass::MovingRectangle(int x)
     
     
    
+}
+
+void MinerClass::KeyEvent()
+{ 
+
+     Event = new SDL_Event;
+      
+    while (SDL_PollEvent(Event)) {
+
+  if (Event->type == SDL_KEYDOWN) {
+  switch (Event->key.keysym.sym) {
+    
+    case SDLK_UP: 
+    GenerateRectangle(counter_x,counter_y,h,w,0); // delete previous rectangel, eg. make it black
+    counter_y--;
+    GenerateRectangle(counter_x,counter_y,h,w,255);
+    cout << "Up" << endl;
+    break;
+    
+    case SDLK_DOWN:
+    GenerateRectangle(counter_x,counter_y,h,w,0);
+    counter_y++;
+    GenerateRectangle(counter_x,counter_y,h,w,255); 
+    cout << "Down" << endl;
+    break;
+    
+    
+    case SDLK_LEFT:
+    GenerateRectangle(counter_x,counter_y,h,w,0); 
+    counter_x--;
+    GenerateRectangle(counter_x,counter_y,h,w,255);
+    cout << "Left" << endl;
+    break;
+    
+    case SDLK_RIGHT:
+    GenerateRectangle(counter_x,counter_y,h,w,0); 
+    counter_x++;
+    GenerateRectangle(counter_x,counter_y,h,w,255);
+    cout << "Right" << endl;
+    break;
+    
+    case SDLK_ESCAPE: // exit while loop in main by setting flag f
+    f =1;
+    break;
+    }
+    }
+
+  
+}
+}
+
+int MinerClass::Fvalue()
+{
+    return f;
 }

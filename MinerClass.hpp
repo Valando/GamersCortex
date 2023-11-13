@@ -7,6 +7,7 @@ public:
     // Constructor
     MinerClass(int initialValue);
     SDL_Rect* rect;
+    SDL_Event* Event;
     
     // Member function
     void printValue() const;
@@ -15,6 +16,8 @@ public:
     void GenerateRectangle(int xr, int yr, int wr, int hr,int c);
      // move rectangle along the x axis
     void MovingRectangle(int x);
+    void KeyEvent();
+    int Fvalue();
     ~MinerClass();
 private:
     // Private data member
@@ -22,7 +25,9 @@ private:
     SDL_Window* vindue;
     SDL_Renderer* renderer;
     int value,h,w;
-    
+    int f; //flag to exist while loop for entre program
+    int counter_x;
+    int counter_y;
    
 };
 
